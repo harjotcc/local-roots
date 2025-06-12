@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using local_roots.Models;
-
 namespace local_roots.Controllers;
 
 public class HomeController : Controller
@@ -15,7 +14,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var products = ProductService.GetProducts();
+        return View(products);
     }
 
     public IActionResult Privacy()

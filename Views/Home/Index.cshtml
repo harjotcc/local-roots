@@ -2,7 +2,185 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+}
+.product-card {
+    border-radius: 0.7rem;
+    box-shadow: 0 2px 8px rgba(60,60,60,0.10);
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: 2px solid transparent;
+}
+.product-card:hover {
+    box-shadow: 0 4px 24px rgba(60,60,60,0.18);
+    border-color: #42D3B9;
+    transform: translateY(-4px) scale(1.03);
+}
+.product-card img {
+    width: 100%;
+    height: 100%px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background: #c9d342;
+    border: 2px solid #ffc9de;
+}
+.product-card .product-price {
+    color: #42D3B9;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+.product-card .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+.product-card .star,
+.product-card .star-empty {
+    color: #c9d342;
+    font-size: 1.1em;
+    margin-right: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.1em;
+    height: 1.1em;
+    line-height: 1.1em;
+    text-align: center;
+}
+.product-card .star-empty {
+    color: #444;
+}
+.product-card .star-half {
+    position: relative;
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+.product-card .star-half svg {
+    display: block;
+    width: 1.1em;
+    height: 1.1em;
+}
+.product-card .num-raters {
+    color: #aaa;
+    font-size: 0.97em;
+}
+.product-card .product-name {
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.product-card .product-desc {
+    color: #ccc;
+    font-size: 0.97rem;
+    text-align: center;
+    margin-bottom: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em;
+    max-width: 95%;
+}
+.product-card .btn {
+    background: #42D3B9;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 1.1rem;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(60,60,60,0.10);
+    display: flex;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+}
+.product-card .btn:hover {
+    background: #d3427a;
+    color: #fff;
+}
+/* Make half star same size as other stars */
+.product-card .star-half svg {
+    width: 1.1em;
+    height: 1.1em;
+}
+</style>
+
+@functions{
+    string GetStars(double rating)
+    {
+        int fullStars = (int)rating;
+        bool halfStar = (rating - fullStars) >= 0.5;
+        int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+        var stars = new System.Text.StringBuilder();
+        for (int i = 0; i < fullStars; i++) { stars.Append("<span class=\"star\">&#9733;</span>"); }
+        if (halfStar)
+        {
+            // SVG for a left-half star, visually aligned and sized as other stars
+            stars.Append(@"<span class=""star-half"">
+                <svg viewBox=""0 0 24 24"" fill=""none"" xmlns=""http://www.w3.org/2000/svg"">
+                  <defs>
+                    <linearGradient id=""half"">
+                      <stop offset=""50%"" stop-color=""#c9d342""/>
+                      <stop offset=""50%"" stop-color=""#444""/>
+                    </linearGradient>
+                  </defs>
+                  <path d=""M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z""
+                        fill=""url(#half)"" stroke=""#c9d342"" stroke-width=""1""/>
+                </svg>
+            </span>");
+        }
+        for (int i = 0; i < emptyStars; i++) { stars.Append("<span class=\"star-empty\">&#9733;</span>"); }
+        return stars.ToString();
+    }
+}
+
+<div class="product-grid">
+    @foreach (var product in Model)
+    {
+        var rating = product.GetType().GetProperty("Rating") != null ? 
+            (product.GetType().GetProperty("Rating").GetValue(product) as double?) ?? 4.5 : 4.5;
+        var raters = product.GetType().GetProperty("NumRaters") != null ? 
+            (product.GetType().GetProperty("NumRaters").GetValue(product) as int?) ?? 120 : 120;
+
+        <div class="product-card">
+            <img src="@product.ImageUrl" alt="@product.Name" />
+            <div class="product-price">@product.Price</div>
+            <div class="product-rating">
+                @Html.Raw(GetStars(rating))
+                <span>@rating.ToString("0.0")</span>
+                <span class="num-raters">(@raters)</span>
+            </div>
+            <div class="product-name" title="@product.Name">@product.Name</div>
+            <div class="product-desc">@product.Description</div>
+            <button class="btn">Add to Cart</button>
+        </div>
+    }
 </div>

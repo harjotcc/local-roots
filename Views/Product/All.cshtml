@@ -1,0 +1,243 @@
+@{
+    ViewData["Title"] = "Products";
+}
+
+<style>
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+}
+.product-card {
+    border-radius: 0.7rem;
+    box-shadow: 0 2px 8px rgba(60,60,60,0.10);
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: 2px solid transparent;
+    color: #fff;
+}
+.product-card:hover {
+    box-shadow: 0 4px 24px rgba(60,60,60,0.18);
+    border-color: #42D3B9;
+    transform: translateY(-4px) scale(1.03);
+}
+.product-card img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background: #c9d342;
+    border: 2px solid #ffc9de;
+}
+.product-card .product-price {
+    color: #42D3B9;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+.product-card .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+.product-card .star,
+.product-card .star-empty {
+    font-size: 1.2em;
+    line-height: 1em;
+    text-align: center;
+    vertical-align: middle;
+    width: 1.2em;
+    height: 1.2em;
+    display: inline-block;
+    margin-right: 2px;
+    user-select: none;
+}
+.product-card .star {
+    color: #c9d342;
+}
+.product-card .star-empty {
+    color: #444;
+}
+.product-card .star-half {
+    position: relative;
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+.product-card .star-half svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.product-card .num-raters {
+    color: #aaa;
+    font-size: 0.9em;
+}
+.product-card .product-name {
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    color: rgb(52, 52, 52);
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.product-card .product-desc {
+    color: #878787;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em;
+    max-width: 95%;
+}
+.product-card .btn-cart {
+    background: #42D3B9;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    font-size: .7rem;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(60,60,60,0.10);
+    @* display: flex; *@
+    justify-content: center;
+    min-width: 44px;
+    min-height: 30px; 
+    width:   100%;
+    cursor: pointer;
+    margin:  2px;
+}
+.product-card .btn-view {
+    background: #b5b5b5;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    font-size: 0.7rem;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(60,60,60,0.10);
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    margin: 2px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.product-card .btn:hover {
+    background: #d3427a;
+    color: #fff;
+}
+/* Half star sized like full stars */
+.product-card .star-half svg {
+    width: 1.2em;
+    height: 1.2em;
+}
+.
+</style>
+
+@functions {
+    string GetStars(double rating)
+    {
+        int fullStars = (int)rating;
+        bool halfStar = (rating - fullStars) >= 0.5;
+        int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+        var stars = new System.Text.StringBuilder();
+
+        for (int i = 0; i < fullStars; i++)
+        {
+            stars.Append("<span class=\"star\">&#9733;</span>");
+        }
+
+        if (halfStar)
+        {
+            stars.Append(@"
+                <span class=""star-half"" aria-label=""Half star"">
+                  <svg viewBox=""0 0 24 24"" xmlns=""http://www.w3.org/2000/svg"" aria-hidden=""true"">
+                    <defs>
+                      <linearGradient id=""halfGradient"">
+                        <stop offset=""50%"" stop-color=""#c9d342"" />
+                        <stop offset=""50%"" stop-color=""#444"" />
+                      </linearGradient>
+                    </defs>
+                    <path d=""M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z""
+                          fill=""url(#halfGradient)"" stroke=""#c9d342"" stroke-width=""1""/>
+                  </svg>
+                </span>");
+        }
+
+        for (int i = 0; i < emptyStars; i++)
+        {
+            stars.Append("<span class=\"star-empty\">&#9733;</span>");
+        }
+
+        return stars.ToString();
+    }
+}
+
+<div class="product-grid">
+    @foreach (var product in Model)
+    {
+        double rating = 4.5;
+        int raters = 120;
+
+        // Use reflection if needed, fallback to defaults above
+        var ratingProp = product.GetType().GetProperty("Rating");
+        if (ratingProp != null)
+        {
+            var val = ratingProp.GetValue(product);
+            if (val != null)
+            {
+                rating = Convert.ToDouble(val);
+            }
+        }
+
+
+        var ratersProp = product.GetType().GetProperty("NumRaters");
+        if (ratersProp != null)
+            raters = (int)(ratersProp.GetValue(product) ?? 120);
+
+            <div class="product-card">
+                <img src="@product.ImageUrl" alt="@product.Name" />
+                <div class="product-price">@product.Price</div>
+                <div class="product-rating">
+                    @Html.Raw(GetStars(rating))
+                    <span>@rating.ToString("0.0")</span>
+                    <span class="num-raters">(@raters)</span>
+                </div>
+                
+                <div class="product-desc"><b style="color: #3d3d3d; font-size: 110%;">@product.Name</b> @product.Description</div>
+
+
+
+                <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn-view" onclick="event.stopPropagation();">View</a>
+                <button class="btn-cart" onclick="event.stopPropagation(); event.preventDefault();">Add to Cart</button>
+            </div>
+        
+    }
+</div>

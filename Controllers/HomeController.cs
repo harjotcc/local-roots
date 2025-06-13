@@ -14,8 +14,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var products = ProductService.GetProducts();
-        return View(products);
+        return RedirectToAction("All", "Product");
     }
 
     public IActionResult Privacy()

@@ -96,5 +96,14 @@ public async Task<IActionResult> AddProduct(Product product)
             var products = _context.Products.ToList();
             return View(products);
         }
+
+        [HttpGet]
+        public IActionResult ViewProduct(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return NotFound();
+            return View(product);
+        }
     }
 }

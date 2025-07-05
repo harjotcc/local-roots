@@ -9,20 +9,26 @@
 }
 else
 {
-    <div class="card" style="max-width:500px;margin:auto;">
-        <img src="@Model.ImageUrl" alt="@Model.Name" class="card-img-top" style="width:100%;max-height:300px;object-fit:cover;" />
-        <div class="card-body">
-            <h3 class="card-title">@Model.Name</h3>
-            <div class="mb-2" style="font-size:1.3rem;font-weight:bold;color:#42D3B9;">@Model.Price</div>
-            <div class="mb-2" style="color:#888;">@Model.Description</div>
-            <div class="mb-2">
-                <span style="color:#c9d342;font-size:1.1em;">&#9733;</span>
-                <span>@Model.Rating.ToString("0.0")</span>
-                <span style="color:#aaa;">(@Model.NumRaters)</span>
+    <div style="min-height:60vh;display:flex;align-items:center;">
+        <div class="card mx-auto" style="max-width:500px;width:100%;">
+            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/def-product.png" : Model.ImageUrl)"
+                 alt="@Model.Name"
+                 class="card-img-top"
+                 style="width:100%;max-height:300px;object-fit:cover;"
+                 onerror="this.onerror=null;this.src='/images/def-product.png';" />
+            <div class="card-body">
+                <h3 class="card-title">@Model.Name</h3>
+                <div class="mb-2" style="font-size:1.3rem;font-weight:bold;color:#42D3B9;">@Model.Price</div>
+                <div class="mb-2" style="color:#888;">@Model.Description</div>
+                <div class="mb-2">
+                    <span style="color:#c9d342;font-size:1.1em;">&#9733;</span>
+                    <span>@Model.Rating.ToString("0.0")</span>
+                    <span style="color:#aaa;">(@Model.NumRaters)</span>
+                </div>
+                <div class="mb-2"><strong>Vendor ID:</strong> @Model.VendorId</div>
+                <a href="@Url.Action("All", "Product")" class="btn btn-secondary mt-2">Back to Products</a>
             </div>
-            <div class="mb-2"><strong>Vendor ID:</strong> @Model.VendorId</div>
-            <a href="@Url.Action("All", "Product")" class="btn btn-secondary mt-2">Back to Products</a>
         </div>
     </div> 
 
-}}
+}

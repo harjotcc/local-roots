@@ -7,22 +7,23 @@ namespace local_roots.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductController()
+        // Use dependency injection for IProductService
+        public ProductController(IProductService productService)
         {
-            _productService = new ProductService(); // Manual injection for demonstration
+            _productService = productService;
         }
 
         // Show details for a single product
         public IActionResult Details(int id)
         {
-            var products = _productService.GetAllProducts();
-            if (id < 0 || id >= products.Count)
+            var product = _productService.GetProductById(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            var product = products[id];
             return View(product);
         }
+
         // GET: /Product/All
         public IActionResult All()
         {

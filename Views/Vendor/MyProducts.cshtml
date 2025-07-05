@@ -39,6 +39,9 @@
                         </td>
                         <td class="align-middle text-center">@product.Count</td>
                         <td class="align-middle text-center">
+                            <a asp-action="ViewProduct" asp-route-id="@product.Id" class="btn btn-sm btn-outline-success rounded-pill me-1 px-3">
+                                <i class="bi bi-eye"></i> View
+                            </a>
                             <a asp-action="EditProduct" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary rounded-pill me-1 px-3">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>

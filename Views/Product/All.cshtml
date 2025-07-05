@@ -209,7 +209,6 @@
         double rating = 4.5;
         int raters = 120;
 
-        // Use reflection if needed, fallback to defaults above
         var ratingProp = product.GetType().GetProperty("Rating");
         if (ratingProp != null)
         {
@@ -220,24 +219,21 @@
             }
         }
 
-
         var ratersProp = product.GetType().GetProperty("NumRaters");
         if (ratersProp != null)
             raters = (int)(ratersProp.GetValue(product) ?? 120);
 
             <div class="product-card">
-                <img src="@product.ImageUrl" alt="@product.Name" />
+                <img src="@product.ImageUrl"
+                     alt="@product.Name"
+                     onerror="this.onerror=null;this.src='/images/def-product.png';" />
                 <div class="product-price">@product.Price</div>
                 <div class="product-rating">
                     @Html.Raw(GetStars(rating))
                     <span>@rating.ToString("0.0")</span>
                     <span class="num-raters">(@raters)</span>
                 </div>
-                
                 <div class="product-desc"><b style="color: #3d3d3d; font-size: 110%;">@product.Name</b> @product.Description</div>
-
-
-
                 <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn-view" onclick="event.stopPropagation();">View</a>
                 <button class="btn-cart" onclick="event.stopPropagation(); event.preventDefault();">Add to Cart</button>
             </div>

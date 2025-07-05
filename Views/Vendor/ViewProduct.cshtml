@@ -1,0 +1,35 @@
+@model local_roots.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h2 class="mb-4 text-center fw-bold">@Model.Name</h2>
+<div class="card shadow-lg mx-auto" style="max-width: 650px; border-radius: 1rem;">
+    <div class="row g-0">
+        <div class="col-md-5 d-flex align-items-center justify-content-center bg-light" style="border-radius: 1rem 0 0 1rem;">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height:260px; object-fit:cover;" />
+            }
+            else
+            {
+                <span class="text-muted">No Image</span>
+            }
+        </div>
+        <div class="col-md-7">
+            <div class="card-body">
+                <h4 class="card-title mb-3">@Model.Name</h4>
+                <p class="card-text mb-2"><span class="fw-semibold">Price:</span> <span class="text-success">@Model.Price</span></p>
+                <p class="card-text mb-2"><span class="fw-semibold">Description:</span> @Model.Description</p>
+                <p class="card-text mb-2"><span class="fw-semibold">Stock:</span> @Model.Count</p>
+                <a asp-action="EditProduct" asp-route-id="@Model.Id" class="btn btn-outline-primary rounded-pill me-2">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <a asp-action="DeleteProduct" asp-route-id="@Model.Id" class="btn btn-outline-danger rounded-pill">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

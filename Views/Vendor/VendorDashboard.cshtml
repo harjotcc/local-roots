@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Vendor Dashboard";
+}
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
+    <h2>Welcome, Vendor!</h2>
+    <p>This is your dashboard.</p>
+
+    <div class="d-flex gap-3 mt-4">
+        <a href="@Url.Action("AddProduct", "Vendor")" class="btn btn-success rounded-pill px-4">
+            <i class="bi bi-plus-circle me-2"></i> Add Product
+        </a>
+      
+        <a href="@Url.Action("MyProducts", "Vendor")" class="btn btn-info rounded-pill px-4 text-white">
+            <i class="bi bi-box-seam me-2"></i> Show All My Products
+        </a>
+    </div>
+</div>

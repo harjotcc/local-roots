@@ -14,9 +14,29 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return RedirectToAction("All", "Product");
+        //return RedirectToAction("All", "Product");
+        return RedirectToAction("Continue", "Home");
+    }
+ [HttpGet]
+    public IActionResult Continue()
+    {
+        return View();
     }
 
+    [HttpPost]
+    public IActionResult ContinueAs(string role)
+    {
+        if (role == "Vendor")
+        {
+            return RedirectToAction("VendorDashboard", "Vendor");
+        }
+        else if (role == "Customer")
+        {
+            return RedirectToAction("All", "Product");
+        }
+
+        return RedirectToAction("Continue");
+    }
     public IActionResult Privacy()
     {
         return View();

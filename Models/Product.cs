@@ -8,5 +8,6 @@ public class Product
     public string ImageUrl { get; set; }
     public float Rating { get; set; } // Changed to float
     public int NumRaters { get; set; }
+    public int Count { get; set; } 
     public string VendorId { get; set; }
 }

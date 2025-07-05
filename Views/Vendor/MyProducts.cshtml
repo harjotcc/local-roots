@@ -1,0 +1,55 @@
+@model IEnumerable<local_roots.Models.Product>
+@{
+    ViewData["Title"] = "My Products";
+    var serial = 1;
+}
+
+<h2 class="mb-4 text-center fw-bold">My Products</h2>
+<div class="d-flex justify-content-center" style="min-height: 60vh;">
+    <div class="w-100" style="max-width: 1100px;">
+        <table class="table table-hover align-middle shadow rounded-4 overflow-hidden">
+            <thead class="table-success text-center">
+                <tr>
+                    <th class="fw-semibold text-center">#</th>
+                    <th class="fw-semibold text-center">Name</th>
+                    <th class="fw-semibold text-center">Price</th>
+                    <th class="fw-semibold text-center">Description</th>
+                    <th class="fw-semibold text-center">Image</th>
+                    <th class="fw-semibold text-center">Stock</th>
+                    <th class="fw-semibold text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td class="align-middle text-center">@serial</td>
+                        <td class="align-middle text-center">@product.Name</td>
+                        <td class="align-middle text-center">@product.Price</td>
+                        <td class="align-middle text-center" style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">@product.Description</td>
+                        <td class="align-middle text-center">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border:1px solid #eee;" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">No Image</span>
+                            }
+                        </td>
+                        <td class="align-middle text-center">@product.Count</td>
+                        <td class="align-middle text-center">
+                            <a asp-action="EditProduct" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary rounded-pill me-1 px-3">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="DeleteProduct" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    serial++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

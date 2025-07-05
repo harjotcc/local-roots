@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Continue As";
+}
+
+<style>
+    .continue-btn:hover, .continue-btn:focus {
+        background-color: #42D3B9 !important;
+        color: #fff !important;
+        border-color: #42D3B9 !important;
+    }
+    .continue-btn-outline:hover, .continue-btn-outline:focus {
+        background-color: #42D3B9 !important;
+        color: #fff !important;
+        border-color: #42D3B9 !important;
+    }
+</style>
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
+    <h2 class="mb-4">Continue As</h2>
+    <form method="post" asp-controller="Home" asp-action="ContinueAs" class="d-flex flex-column gap-4 align-items-center w-100" style="max-width: 350px;">
+        <button type="submit" name="role" value="Vendor" class="btn btn-outline-secondary w-100 py-3 rounded-pill shadow-sm fs-5 continue-btn">
+            <i class="bi bi-shop me-2"></i> Vendor
+        </button>
+        <button type="submit" name="role" value="Customer" class="btn btn-outline-secondary w-100 py-3 rounded-pill shadow-sm fs-5 continue-btn-outline">
+            <i class="bi bi-person me-2"></i> Customer
+        </button>
+    </form>
+</div>

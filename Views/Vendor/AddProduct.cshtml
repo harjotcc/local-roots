@@ -1,0 +1,48 @@
+@model local_roots.Models.Product
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2 class="mb-4">Add Product</h2>
+
+<form asp-action="AddProduct" method="post" class="mx-auto" style="max-width: 500px;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control rounded-pill" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control rounded-pill" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ImageUrl" class="form-label"></label>
+        <input asp-for="ImageUrl" class="form-control rounded-pill" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Count" class="form-label"></label>
+        <input asp-for="Count" class="form-control rounded-pill" />
+        <span asp-validation-for="Count" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="VendorId" />
+    <input type="hidden" asp-for="Rating" />
+    <input type="hidden" asp-for="NumRaters" />
+
+    <button type="submit" class="btn btn-success w-100 rounded-pill py-2">
+        <i class="bi bi-plus-circle me-2"></i> Add Product
+    </button>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

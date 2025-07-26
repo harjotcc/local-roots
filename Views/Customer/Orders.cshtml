@@ -1,0 +1,93 @@
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+    var themeColor = "#42D3B9"; // Customize your theme color here
+}
+
+<style>
+    .order-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .order-card {
+        border: 1px solid @themeColor;
+        border-left: 6px solid @themeColor;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: @themeColor;
+    }
+
+    .order-meta {
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .order-table th, .order-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .order-table th {
+        background-color: @themeColor;
+        color: white;
+    }
+
+    .order-total {
+        font-weight: bold;
+        margin-top: 10px;
+        color: #000;
+    }
+</style>
+
+<div class="order-container">
+    @foreach (var order in Model)
+    {
+        <div class="order-card">
+            <div class="order-header">Order #@order.OrderId</div>
+            <div class="order-meta">Date: @order.OrderDate.ToShortDateString()</div>
+            <div class="order-meta">Status: @order.Status</div>
+
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Price.ToString("F2"))</td>
+                            <td>@((item.Price * item.Quantity).ToString("F2"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="order-total">Total: $@order.TotalPrice.ToString("F2")</div>
+        </div>
+    }
+</div>

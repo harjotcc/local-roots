@@ -1,0 +1,102 @@
+{
+  "Customers": [
+    {
+      "UserId": 5,
+      "Email": "john@example.com",
+      "PasswordHash": "hashedpassword1",
+      "FullName": "John Doe"
+    },
+    {
+      "UserId": 2,
+      "Email": "jane@example.com",
+      "PasswordHash": "hashedpassword2",
+      "FullName": "Jane Smith"
+    }
+  ],
+  "Sellers": [
+    {
+      "UserId": 3,
+      "Email": "seller1@store.com",
+      "PasswordHash": "hashedpassword3",
+      "StoreName": "Tech Haven"
+    },
+    {
+      "UserId": 4,
+      "Email": "seller2@shop.com",
+      "PasswordHash": "hashedpassword4",
+      "StoreName": "Home Essentials"
+    }
+  ],
+  "Products": [
+    {
+      "Id": 1,
+      "Name": "Wireless Mouse",
+      "Description": "Ergonomic wireless mouse with USB receiver.",
+      "Price": 29.99,
+      "Stock": 150,
+      "Category": "Electronics",
+      "ImageUrl": "https://example.com/images/mouse.jpg",
+      "SellerId": 3
+    },
+    {
+      "Id": 2,
+      "Name": "Ceramic Coffee Mug",
+      "Description": "Classic white ceramic mug, 350ml.",
+      "Price": 9.99,
+      "Stock": 300,
+      "Category": "Kitchen",
+      "ImageUrl": "https://example.com/images/mug.jpg",
+      "SellerId": 4
+    }
+  ],
+  "Reviews": [
+    {
+      "ReviewId": 1,
+      "Rating": 5,
+      "Comment": "Great product, fast delivery!",
+      "Date": "2025-07-01T00:00:00",
+      "CustomerId": 1,
+      "ProductId": 1
+    },
+    {
+      "ReviewId": 2,
+      "Rating": 4,
+      "Comment": "Very sturdy mug, good quality.",
+      "Date": "2025-07-05T00:00:00",
+      "CustomerId": 2,
+      "ProductId": 2
+    }
+  ],
+  "Orders": [
+    {
+      "OrderId": 1,
+      "OrderDate": "2025-07-10T00:00:00",
+      "Status": "Delivered",
+      "TotalPrice": 29.99,
+      "CustomerId": 1
+    },
+    {
+      "OrderId": 2,
+      "OrderDate": "2025-07-12T00:00:00",
+      "Status": "Processing",
+      "TotalPrice": 9.99,
+      "CustomerId": 2
+    }
+  ],
+  "OrderItems": [
+    {
+      "OrderItemId": 1,
+      "Quantity": 1,
+      "Price": 29.99,
+      "OrderId": 1,
+      "ProductId": 1
+    },
+    {
+      "OrderItemId": 2,
+      "Quantity": 1,
+      "Price": 9.99,
+      "OrderId": 2,
+      "ProductId": 2
+    }
+  ]
+}

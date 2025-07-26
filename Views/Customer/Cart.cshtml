@@ -1,0 +1,48 @@
+@model List<CartItem>
+
+<h2>Your Cart</h2>
+
+@if (Model.Count == 0)
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <form method="post" asp-controller="Customer" asp-action="BuyAll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("C")</td>
+                    <td>
+                        <button type="submit" formaction="@Url.Action("DecreaseQuantity", "Customer", new { id = item.Product.Id })" class="btn btn-sm btn-secondary" @(item.Quantity <= 1 ? "disabled" : "")>-</button>
+                        <span style="margin: 0 10px;">@item.Quantity</span>
+                        <button type="submit" formaction="@Url.Action("IncreaseQuantity", "Customer", new { id = item.Product.Id })" class="btn btn-sm btn-secondary" @(item.Quantity >= 10 ? "disabled" : "")>+</button>
+                    </td>
+                    <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Product", new { id = item.Product.Id })" class="btn btn-sm btn-primary">View</a>
+                        <button type="submit" formaction="@Url.Action("RemoveFromCart", "Customer", new { id = item.Product.Id })" class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    <button type="submit" class="btn btn-success">Buy All</button>
+
+    </form>
+
+
+}

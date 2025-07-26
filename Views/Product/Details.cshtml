@@ -1,6 +1,14 @@
 @model local_roots.Models.Product
 @{
     ViewData["Title"] = "Product Details";
+
+    double rating = 0;
+    int raters = 0;
+    if (Model.Reviews != null && Model.Reviews.Any())
+    {
+        rating = Model.Reviews.Average(r => r.Rating);
+        raters = Model.Reviews.Count();
+    }
 }
 
 @if (Model == null)
@@ -9,26 +17,113 @@
 }
 else
 {
-    <div style="min-height:60vh;display:flex;align-items:center;">
-        <div class="card mx-auto" style="max-width:500px;width:100%;">
-            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/def-product.png" : Model.ImageUrl)"
-                 alt="@Model.Name"
-                 class="card-img-top"
-                 style="width:100%;max-height:300px;object-fit:cover;"
-                 onerror="this.onerror=null;this.src='/images/def-product.png';" />
-            <div class="card-body">
-                <h3 class="card-title">@Model.Name</h3>
-                <div class="mb-2" style="font-size:1.3rem;font-weight:bold;color:#42D3B9;">@Model.Price</div>
-                <div class="mb-2" style="color:#888;">@Model.Description</div>
-                <div class="mb-2">
-                    <span style="color:#c9d342;font-size:1.1em;">&#9733;</span>
-                    <span>@Model.Rating.ToString("0.0")</span>
-                    <span style="color:#aaa;">(@Model.NumRaters)</span>
+    <div class="container py-4">
+        <div class="row">
+            <!-- Product Card -->
+            <div class="col-md-5 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/def-product.png" : Model.ImageUrl)"
+                         class="card-img-top"
+                         style="object-fit: cover; height: 300px;"
+                         onerror="this.onerror=null;this.src='/images/def-product.png';" />
+                    <div class="card-body">
+                        <h3 class="card-title">@Model.Name</h3>
+                        <p class="text-success fw-bold fs-4">@Model.Price.ToString("C")</p>
+                        <p class="text-muted">@Model.Description</p>
+
+                        <div class="mb-2">
+                            <strong>Rating:</strong>
+                            <span class="text-warning fs-5">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <text>@(i <= Math.Round(rating) ? "★" : "☆")</text>
+                                }
+                            </span>
+                            <span class="text-muted">(@raters)</span>
+                        </div>
+
+                        <p><strong>Vendor:</strong> @Model.Seller?.StoreName</p>
+                        <p><strong>Category:</strong> @Model.Category</p>
+                        <p><strong>Stock:</strong> @Model.Stock</p>
+
+                        <a href="@Url.Action("All", "Product")" class="btn btn-outline-secondary">Back to Products</a>
+                    </div>
                 </div>
-                <div class="mb-2"><strong>Vendor ID:</strong> @Model.VendorId</div>
-                <a href="@Url.Action("All", "Product")" class="btn btn-secondary mt-2">Back to Products</a>
+            </div>
+
+            <!-- Right Column: Add Review + Reviews -->
+            <div class="col-md-7">
+                <!-- Add Review Card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Add a Review</h5>
+                        <form method="post" action="@Url.Action("AddReview", "Customer")">
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <div class="mb-2">
+                                <label class="form-label">Your Review</label>
+                                <textarea name="Comment" class="form-control" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label><br />
+                                <div id="starRating" class="text-warning fs-4" style="cursor:pointer;">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <span class="star" data-value="@i">☆</span>
+                                    }
+                                </div>
+                                <input type="hidden" name="Rating" id="ratingInput" value="0" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Review List Card -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Reviews </h5>
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            foreach (var review in Model.Reviews)
+                            {
+                                <div class="mb-3 border-bottom pb-2">
+                                    <div class="fw-semibold">@review.Customer?.FullName</div>
+                                    <div class="text-warning">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <text>@(i <= review.Rating ? "★" : "☆")</text>
+                                        }
+                                    </div>
+                                    <p class="mb-0">@review.Comment</p>
+                                </div>
+                            }
+                        }
+                        else if (Model.Reviews == null )
+                        {
+                            <p class="text-muted">null revires.</p>
+                        }
+                         else
+                        {
+                            <p class="text-muted">No reviews yet.</p>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
-    </div> 
+    </div>
+}
 
+@section Scripts {
+    <script>
+        document.querySelectorAll('.star').forEach(function (star) {
+            star.addEventListener('click', function () {
+                const rating = this.getAttribute('data-value');
+                document.getElementById('ratingInput').value = rating;
+
+                document.querySelectorAll('.star').forEach(function (s, index) {
+                    s.textContent = (index < rating) ? '★' : '☆';
+                });
+            });
+        });
+    </script>
 }

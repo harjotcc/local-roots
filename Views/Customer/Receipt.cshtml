@@ -1,0 +1,33 @@
+@model Order
+
+<h2>Thank You for Shopping with Us!</h2>
+
+<p>Order ID: <strong>@Model.OrderId</strong></p>
+<p>Date: <strong>@Model.OrderDate.ToLocalTime().ToString("f")</strong></p>
+<p>Status: <strong>@Model.Status</strong></p>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@(item.Quantity * item.Price).ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4 class="text-end">Grand Total: <strong>@Model.TotalPrice.ToString("C")</strong></h4>
+
+<a class="btn btn-primary mt-3" asp-controller="Home" asp-action="Index">Back to Home</a>

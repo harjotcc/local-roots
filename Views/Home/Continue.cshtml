@@ -3,26 +3,107 @@
 }
 
 <style>
-    .continue-btn:hover, .continue-btn:focus {
+    .continue-btn:hover,
+    .continue-btn:focus {
         background-color: #42D3B9 !important;
         color: #fff !important;
         border-color: #42D3B9 !important;
     }
-    .continue-btn-outline:hover, .continue-btn-outline:focus {
-        background-color: #42D3B9 !important;
-        color: #fff !important;
-        border-color: #42D3B9 !important;
+
+    /* Role toggle group styled as buttons */
+    .role-toggle-group {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .role-toggle-group input[type="radio"] {
+        display: none;
+    }
+
+    .role-toggle-group label {
+        padding: 0.5rem 1.5rem;
+        border: 2px solid #42D3B9;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #42D3B9;
+        user-select: none;
+        transition: background-color 0.3s, color 0.3s;
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .role-toggle-group input[type="radio"]:checked + label {
+        background-color: #42D3B9;
+        color: white;
+    }
+
+    /* Responsive fix: stack on small screens */
+    @@media (max-width: 400px) {
+        .role-toggle-group {
+            flex-direction: column;
+        }
+        .role-toggle-group label {
+            flex: unset;
+        }
     }
 </style>
 
-<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
-    <h2 class="mb-4">Continue As</h2>
-    <form method="post" asp-controller="Home" asp-action="ContinueAs" class="d-flex flex-column gap-4 align-items-center w-100" style="max-width: 350px;">
-        <button type="submit" name="role" value="Vendor" class="btn btn-outline-secondary w-100 py-3 rounded-pill shadow-sm fs-5 continue-btn">
-            <i class="bi bi-shop me-2"></i> Vendor
-        </button>
-        <button type="submit" name="role" value="Customer" class="btn btn-outline-secondary w-100 py-3 rounded-pill shadow-sm fs-5 continue-btn-outline">
-            <i class="bi bi-person me-2"></i> Customer
+<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 65vh;">
+    <h2 class="mb-4">Continue as</h2>
+
+    <form method="post" asp-controller="Home" asp-action="ContinueAs" 
+          class="d-flex flex-column gap-3 align-items-start w-100" style="max-width: 350px;">
+
+        <div class="form-group w-100">
+            <div class="role-toggle-group" role="radiogroup" aria-label="Continue as">
+                <input type="radio" name="role" id="customer" value="Customer" checked />
+                <label for="customer">Customer</label>
+
+                <input type="radio" name="role" id="vendor" value="Vendor" />
+                <label for="vendor">Vendor</label>
+
+                <input type="radio" name="role" id="admin" value="Admin" />
+                <label for="admin">Admin</label>
+            </div>
+        </div>
+
+        <div class="form-group w-100">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" name="email" id="email" class="form-control" required />
+        </div>
+
+        <div class="form-group w-100" id="passwordGroup" style="display:none;">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-outline-secondary w-100 py-3 rounded-pill shadow-sm fs-5 continue-btn">
+            Continue
         </button>
     </form>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+    }
 </div>
+
+<script>
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const passwordGroup = document.getElementById('passwordGroup');
+            const passwordInput = document.getElementById('password');
+            if (this.value === 'Admin') {
+                passwordGroup.style.display = 'block';
+                passwordInput.setAttribute('required', 'required');
+            } else {
+                passwordGroup.style.display = 'none';
+                passwordInput.removeAttribute('required');
+            }
+        });
+    });
+</script>

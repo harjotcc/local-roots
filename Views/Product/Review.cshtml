@@ -1,0 +1,77 @@
+@model List<local_roots.Models.Review>
+@{
+    ViewBag.Title = "Product Reviews";
+    var productId = ViewBag.ProductId;
+}
+
+<style>
+    .review-container {
+        background: #f9f9f9;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .review-name {
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .review-date {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .stars {
+        color: #f5c518;
+        font-size: 16px;
+        margin-top: 5px;
+    }
+
+    .review-comment {
+        margin-top: 8px;
+        font-size: 15px;
+        color: #444;
+    }
+</style>
+
+<h2>Customer Reviews</h2>
+
+@if (!Model.Any())
+{
+    <p>No reviews yet for this product.</p>
+}
+else
+{
+    foreach (var review in Model)
+    {
+        <div class="review-container">
+            <div class="review-header">
+                <span class="review-name">@review.Customer.FullName</span>
+                <span class="review-date">@review.Date.ToShortDateString()</span>
+            </div>
+            <div class="stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= review.Rating)
+                    {
+                        <span>&#9733;</span> <!-- filled star -->
+                    }
+                    else
+                    {
+                        <span style="color:#ddd">&#9733;</span> <!-- empty star -->
+                    }
+                }
+            </div>
+            <div class="review-comment">@review.Comment</div>
+        </div>
+    }
+}

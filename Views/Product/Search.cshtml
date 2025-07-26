@@ -1,0 +1,27 @@
+@model IEnumerable<local_roots.Models.Product>
+
+<h2>Search Results</h2>
+
+@if (!Model.Any())
+{
+    <p>No results found.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3">
+                <div class="card mb-3">
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" />
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text text-muted">@product.Category</p>
+                        <p class="card-text fw-bold">$@product.Price.ToString("0.00")</p>
+                        <a href="/Products/Details/@product.Id" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

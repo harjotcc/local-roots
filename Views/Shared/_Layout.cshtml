@@ -1,22 +1,39 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var role = Context.Session.GetString("Role");
+    var userId = Context.Session.GetString("UserId");
+    var routeData = Context.GetRouteData();
+    var currentController = routeData.Values["controller"]?.ToString();
+    var currentAction = routeData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LocalRoots - @ViewData["Title"]</title>
-    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/local_roots.styles.css" asp-append-version="true" />
-    <style>
 
-        @* FOOTER *@
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
 
         .lr-footer {
             background: #18181b;
             color: #fafafa;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 2rem 1rem;
         }
         .lr-footer-container {
             max-width: 1200px;
@@ -35,37 +52,34 @@
         .lr-footer ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
         .lr-footer a {
             color: #fafafa;
             text-decoration: none;
-            transition: color 0.2s;
+            transition: color 0.2s ease;
         }
         .lr-footer a:hover {
             color: #38bdf8;
         }
-        .lr-footer .lr-social-links {
+        .lr-social-links {
             display: flex;
             gap: 1rem;
         }
-        .lr-footer .lr-social-links a {
-            color: #38bdf8;
-        }
         .lr-footer-desc {
             max-width: 300px;
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
         .lr-footer-copyright {
             border-top: 1px solid #27272a;
             margin-top: 2rem;
             padding-top: 1rem;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #a1a1aa;
         }
 
-
-
-        @* SEARCH BAR *@
         .navbar-search {
             width: 450px;
             max-width: 100%;
@@ -73,17 +87,18 @@
         }
         .search-group {
             display: flex;
-            align-items: stretch;
             border-radius: 0.5rem;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(60,60,60,0.08);
             background: #fff;
         }
-        .search-group select, .search-group input {
+        .search-group select,
+        .search-group input,
+        .search-group button {
             border: none;
             outline: none;
-            box-shadow: none;
             background: transparent;
+            height: 2.2rem;
         }
         .search-group select {
             padding: 0 1rem;
@@ -91,32 +106,24 @@
             color: #333;
             border-right: 1px solid #e5e7eb;
             font-size: 1rem;
-            border-radius: 0;
-            height: 2.2rem; /* Reduced height */
         }
         .search-group input[type="search"] {
             flex: 1;
-            padding: 0.4rem 1rem; /* Reduced vertical padding */
+            padding: 0.4rem 1rem;
             font-size: 1rem;
-            background: transparent;
-            border-radius: 0;
-            height: 2.2rem; /* Reduced height */
         }
         .search-group button {
             background: #42D3B9;
             color: #fff;
-            border: none;
             padding: 0 1.2rem;
-            font-size: 1rem;
-            border-radius: 0;
             transition: background 0.2s;
             display: flex;
             align-items: center;
-            height: 2.2rem; /* Reduced height */
         }
         .search-group button:hover {
             background: #38bdf8;
         }
+
         @@media (max-width: 576px) {
             .navbar-search {
                 width: 100%;
@@ -124,48 +131,66 @@
             .search-group input[type="search"] {
                 padding: 0.3rem 0.5rem;
             }
-            .search-group button {
-                padding: 0 1rem;
-            }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LocalRoots</a>
-               
-               
-                <form class="navbar-search" role="search" method="get" action="/search">
-                    <div class="search-group">
-                        <select name="type" aria-label="Filter by type">
-                            <option value="">All</option>
-                            <option value="product">Product</option>
-                            <option value="category">Category</option>
-                            <option value="brand">Brand</option>
-                        </select>
-                        <input class="form-control" type="search" placeholder="Search..." aria-label="Search" name="q">
-                        <button type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </button>
-                    </div>
-               
-                </form>
-         
+
+                @if ((role == "Customer" || role == "Vendor" || role == "Admin") 
+                        && !string.IsNullOrEmpty(userId)
+                        && !(currentController == "Home" && currentAction == "Continue"))
+                    {
+                        <span class="text-muted ms-3">Signed in as <strong>User @userId</strong></span>
+                    }
+
+                @if (role == "Customer")
+                {
+
+                    //search bar start
+
+            <form class="navbar-search" role="search" method="get" asp-controller="Product" asp-action="Search">
+  <div class="search-group">
+    <select name="type" aria-label="Filter by type">
+      <option value="">All</option>
+      <option value="product">Product</option>
+      <option value="category">Category</option>
+      <option value="seller">Seller</option>
+    </select>
+    <input
+      class="form-control"
+      type="search"
+      placeholder="Search..."
+      aria-label="Search"
+      name="q"
+      required
+    />
+    <button type="submit">Search</button>
+  </div>
+</form>
+
+
+                      
+                    //search bar end
+
+                    <a asp-controller="Customer" asp-action="Orders" class="btn btn-outline-primary ms-3">  Orders  </a>
+                    <a asp-controller="Customer" asp-action="Cart" class="btn btn-outline-primary ms-3">  Cart  </a>
+
+                }
+                 @if (role == "Customer" || role == "Vendor" || role == "Admin")
+                {
+                    <a asp-controller="Home" asp-action="Logout" class="btn btn-outline-primary ms-3">  Logout  </a>
+                }
             </div>
         </nav>
     </header>
 
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3 container">
+        @RenderBody()
+    </main>
 
     <footer class="lr-footer">
         <div class="lr-footer-container">

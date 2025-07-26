@@ -21,43 +21,45 @@
     <p>This is your dashboard.</p>
 
     <div class="d-flex flex-wrap justify-content-center gap-3 mt-4 w-100" style="max-width: 900px;">
-        <!-- Line 1 -->
+        <!-- Active links -->
         <a href="@Url.Action("AddProduct", "Vendor")" class="btn btn-success rounded-pill px-4 mb-2 vendor-btn">
             <i class="bi bi-plus-circle me-2"></i>+ Add Product
         </a>
         <a href="@Url.Action("MyProducts", "Vendor")" class="btn btn-info rounded-pill px-4 text-white mb-2 vendor-btn">
             <i class="bi bi-box-seam me-2"></i> Show All My Products
         </a>
-        <button class="btn btn-outline-secondary rounded-pill px-4 mb-2 vendor-btn" disabled>
+
+        <!-- Disabled placeholders with tooltips -->
+        <button class="btn btn-outline-secondary rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-person-circle me-2"></i> Profile
         </button>
-        <button class="btn btn-outline-warning rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-warning rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-clock-history me-2"></i> Past Sales
         </button>
-        <!-- Line 2 -->
-        <button class="btn btn-outline-danger rounded-pill px-4 mb-2 vendor-btn" disabled>
+
+        <button class="btn btn-outline-danger rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-x-circle me-2"></i> Sold Out Products
         </button>
-        <button class="btn btn-outline-success rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-success rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-award me-2"></i> Promotions
         </button>
-        <button class="btn btn-outline-dark rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-dark rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-bar-chart me-2"></i> Analytics
         </button>
-        <button class="btn btn-outline-primary rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-primary rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-gift me-2"></i> Badges
         </button>
-        <!-- Line 3 -->
-        <button class="btn btn-outline-info rounded-pill px-4 mb-2 vendor-btn" disabled>
+
+        <button class="btn btn-outline-info rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-envelope me-2"></i> Messages
         </button>
-        <button class="btn btn-outline-secondary rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-secondary rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-gear me-2"></i> Settings
         </button>
-        <button class="btn btn-outline-warning rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-warning rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-exclamation-circle me-2"></i> Alerts
         </button>
-        <button class="btn btn-outline-danger rounded-pill px-4 mb-2 vendor-btn" disabled>
+        <button class="btn btn-outline-danger rounded-pill px-4 mb-2 vendor-btn" disabled aria-disabled="true" title="Coming soon">
             <i class="bi bi-trash me-2"></i> Archive
         </button>
     </div>

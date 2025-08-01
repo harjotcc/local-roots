@@ -156,7 +156,7 @@
                             <td>@order.OrderId</td>
                             <td>@order.OrderDate.ToShortDateString()</td>
                             <td>@order.Status</td>
-                            <td>@order.TotalPrice</td>
+                            <td>@(order.TotalPrice.ToString("C"))</td>
                             <td>@order.CustomerId</td>
                             <td>
                                 <a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId" class="btn-sm btn-info">View</a>
@@ -228,7 +228,7 @@
                             <td>@product.Id</td>
                             <td>@product.Name</td>
                             <td>@product.Description</td>
-                            <td>@product.Price</td>
+                            <td>@(product.Price.ToString("C"))</td>
                             <td>@product.Stock</td>
                             <td>@product.Category</td>
                             <td>@product.SellerId</td>

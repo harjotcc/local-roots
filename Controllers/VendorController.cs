@@ -80,23 +80,20 @@ namespace local_roots.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(Product product)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Products.Update(product);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("MyProducts");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-            }
-            return View(product);
+            
+            Console.WriteLine(">>>>>> Attempting to update product with ID: " + product.Id);
+            //product values
+            Console.WriteLine($"Name: {product.Name}, Price: {product.Price}, Description: {product.Description}" 
+                + $", SellerId: {product.SellerId}, Category: {product.Category} , ImageUrl : {product.ImageUrl}");
+           
+           
+           
+
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("MyProducts");
+
+        
         }
 
         // GET: Confirm delete product

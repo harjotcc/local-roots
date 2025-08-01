@@ -1,4 +1,5 @@
 @model local_roots.Models.Product
+
 @{
     ViewData["Title"] = "Edit Product";
 }
@@ -35,6 +36,12 @@
         <label asp-for="Stock" class="form-label">Stock Quantity</label>
         <input asp-for="Stock" class="form-control rounded-pill" type="number" min="0" />
         <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Category" class="form-label">Category</label>
+        <input asp-for="Category" class="form-control rounded-pill" />
+        <span asp-validation-for="Category" class="text-danger"></span>
     </div>
 
     @* SellerId should be set server-side; keep hidden *@
